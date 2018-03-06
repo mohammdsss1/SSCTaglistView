@@ -12,7 +12,7 @@ protocol TagColllectionCellDelegate {
 }
 
 class TagCollectionCell: UICollectionViewCell {
-    
+    // Mohammad 
     // IBOutlets
     @IBOutlet var lblTag: UILabel!
     @IBOutlet var viewTag: UIView!
