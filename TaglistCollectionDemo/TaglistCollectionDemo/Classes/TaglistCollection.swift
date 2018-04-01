@@ -232,7 +232,8 @@ protocol TagViewDelegate: class {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = self.tagSpacing
         layout.minimumInteritemSpacing = self.tagSpacing
-        layout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
+        //        layout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
+        layout.estimatedItemSize = CGSize(width: 100, height: 50)
         layout.scrollDirection = .horizontal
         
         // 3 - set collectionview layout
@@ -273,7 +274,7 @@ protocol TagViewDelegate: class {
             self.selectedTagAck.append(false)
         }
         self.collectionView.reloadData()
-        //self.collectionView.collectionViewLayout.invalidateLayout()
+        self.collectionView.collectionViewLayout.invalidateLayout()
     }
     
     /// Append single tag
@@ -283,7 +284,7 @@ protocol TagViewDelegate: class {
         self.tagNames.append(tagName)
         self.selectedTagAck.append(false)
         self.collectionView.reloadData()
-        //self.collectionView.collectionViewLayout.invalidateLayout()
+        self.collectionView.collectionViewLayout.invalidateLayout()
     }
     
     /// Append tag at specific index
@@ -302,10 +303,11 @@ protocol TagViewDelegate: class {
         
         self.tagNames.removeAll()
         self.selectedTagAck.removeAll()
-        self.collectionView.collectionViewLayout.invalidateLayout()
-        self.collectionView.layoutIfNeeded()
+        
         DispatchQueue.main.async {
             self.collectionView.reloadData()
+            self.collectionView.collectionViewLayout.invalidateLayout()
+            self.collectionView.layoutIfNeeded()
         }
     }
     
@@ -320,14 +322,13 @@ protocol TagViewDelegate: class {
         if self.selectedTagAck.count < index {
             self.selectedTagAck.remove(at: index)
         }
-        self.collectionView.collectionViewLayout.invalidateLayout()
-        self.collectionView.layoutIfNeeded()
         
         DispatchQueue.main.async {
             self.collectionView.reloadData()
+            self.collectionView.collectionViewLayout.invalidateLayout()
+            self.collectionView.layoutIfNeeded()
         }
     }
-    
     
     /// Copy all tags
     ///
@@ -388,6 +389,7 @@ extension TaglistCollection : UICollectionViewDataSource ,UICollectionViewDelega
             cell.isCellSelected = self.selectedTagAck[indexPath.item]
             cell.delegate = self as TagColllectionCellDelegate
             cell.configureCell()
+            cell.isHeightCalculated = false
         }
         return cell
     }

@@ -12,7 +12,7 @@ protocol TagColllectionCellDelegate {
 }
 
 class TagCollectionCell: UICollectionViewCell {
-    // Mohammad 
+    
     // IBOutlets
     @IBOutlet var lblTag: UILabel!
     @IBOutlet var viewTag: UIView!
@@ -23,7 +23,8 @@ class TagCollectionCell: UICollectionViewCell {
     var isCellSelected : Bool!
     var indexPath : IndexPath!
     var delegate : TagColllectionCellDelegate!
-
+    var isHeightCalculated: Bool = false
+    
     // IBActions
     @IBAction func removeAction(_ sender: CloseButton) {
         self.delegate.removeTagAt(indexPath: self.indexPath)
@@ -40,7 +41,7 @@ class TagCollectionCell: UICollectionViewCell {
         self.viewTag.backgroundColor = Theme.shared.tagBackgroundColor
         self.viewTag.layer.cornerRadius = 15.0
         self.viewTag.clipsToBounds = true
-
+        
         // Apply theme
         if (Theme.shared.isShadowEnabled == true) {
             self.viewTag.layer.masksToBounds = false
@@ -58,7 +59,7 @@ class TagCollectionCell: UICollectionViewCell {
     
     /// Cell configuration
     func configureCell() {
-
+        
         self.lblTag.text = objTagName
         if(Theme.shared.isDeleteEnabled == false) {
             self.btnRemoveTag.removeFromSuperview()
@@ -76,7 +77,19 @@ class TagCollectionCell: UICollectionViewCell {
             }
         }
     }
-
     
+    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+        //Exhibit A - We need to cache our calculation to prevent a crash.
+        if !isHeightCalculated {
+            setNeedsLayout()
+            layoutIfNeeded()
+            let size = contentView.systemLayoutSizeFitting(layoutAttributes.size)
+            var newFrame = layoutAttributes.frame
+            newFrame.size.width = CGFloat(ceilf(Float(size.width)))
+            layoutAttributes.frame = newFrame
+            isHeightCalculated = true
+        }
+        return layoutAttributes
+    }
 }
 
