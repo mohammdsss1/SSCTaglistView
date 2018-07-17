@@ -210,7 +210,7 @@ protocol TagViewDelegate: class {
     /// Init tag view
     ///
     /// - Parameter frame: frame of rect
-    override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
     }
     
