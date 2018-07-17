@@ -21,7 +21,7 @@ protocol TagViewDelegate: class {
     
 }
 
-@IBDesignable class TaglistCollection: UIView {
+@IBDesignable public class TaglistCollection: UIView {
     
     /// Spacing between tags
     @IBInspectable public var tagSpacing: CGFloat = 0.0 {
@@ -214,12 +214,12 @@ protocol TagViewDelegate: class {
         super.init(frame: frame)
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         //fatalError("init(coder:) has not been implemented")
     }
     
-    override func awakeFromNib() {
+    override public func awakeFromNib() {
     }
     
     
@@ -374,12 +374,12 @@ protocol TagViewDelegate: class {
 extension TaglistCollection : UICollectionViewDataSource ,UICollectionViewDelegate ,UICollectionViewDelegateFlowLayout{
     
     // 1.
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.tagNames.count
     }
     
     // 2.
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cellReuserIdentifier = "Cell"
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuserIdentifier, for: indexPath) as! TagCollectionCell
         cell.indexPath = indexPath
@@ -395,7 +395,7 @@ extension TaglistCollection : UICollectionViewDataSource ,UICollectionViewDelega
     }
     
     // 3.
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if indexPath.item < self.tagNames.count {
             let w = self.tagNames[indexPath.item].width(withConstraintedHeight: 70.0, font: textFont)
             
@@ -406,7 +406,7 @@ extension TaglistCollection : UICollectionViewDataSource ,UICollectionViewDelega
     }
     
     // 4.
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         delegate?.didTaponTag(indexPath)
         if(self.allowMultipleSelection == true) {
             self.selectedTagAck[indexPath.item] = !self.selectedTagAck[indexPath.item]
